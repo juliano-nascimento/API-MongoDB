@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 
 namespace Api
 {
@@ -27,6 +28,19 @@ namespace Api
         {
             services.AddSingleton<Data.MongoDB>();
             services.AddControllers();
+
+            services.AddSwaggerGen();
+
+           // services.AddSwaggerGen(options =>
+			//{
+			//	options.SwaggerDoc("v1",
+              //  new OpenApiInfo
+                //{
+                  //Title = "API  mongoDB",
+                  //Version = "v1",
+                  //Description = "Projeto de Net Core Web API com mongoDB"   
+                //});
+			//});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,6 +50,14 @@ namespace Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c => 
+            {
+                c.RoutePrefix = "swagger";
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API  mongoDB");
+            });
 
             app.UseHttpsRedirection();
 
